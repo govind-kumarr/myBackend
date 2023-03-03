@@ -1,5 +1,6 @@
 require("dotenv").config();
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const express = require("express");
 const connection = require("./config/db");
 const DiaryRouter = require("./routes/diary.routes");
