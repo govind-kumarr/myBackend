@@ -4,8 +4,13 @@ const { DiaryModel } = require("../models/Diary");
 const DiaryRouter = express();
 
 DiaryRouter.get("/", async (req, res, next) => {
-  const data = await DiaryModel.find();
-  res.send(data);
+  try{
+    const data = await DiaryModel.find();
+     res.send(data);
+  }catch{
+    res.send("Error While Fetching data");
+  }
+  
 });
 
 DiaryRouter.post("/create", async (req, res, next) => {
