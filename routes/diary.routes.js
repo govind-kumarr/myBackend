@@ -7,7 +7,8 @@ DiaryRouter.get("/", async (req, res, next) => {
   try{
     const data = await DiaryModel.find();
      res.send(data);
-  }catch{
+  }catch(err){
+    console.log(err);
     res.send("Error While Fetching data");
   }
   
