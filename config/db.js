@@ -1,14 +1,18 @@
-require("dotenv").config();
-const mongoose = require("mongoose");
+import { config } from "dotenv";
+import mongodb, { MongoClient } from "mongodb";
+config();
 
+let _db;
 const makeConnection = async (cb) => {
   try {
-    const connection = await mongoose.connect(process.env.url);
+    const connection = await MongoClient.connect(process.env.url);
     console.log("Connected to database: ");
+    _db = connection.db();
     cb();
   } catch (error) {
     console.log("Error connecting to database\n", error);
   }
 };
+const getDb = () => (_db ? _db : "No Database Found");
 
-module.exports = makeConnection;
+export { makeConnection, getDb };

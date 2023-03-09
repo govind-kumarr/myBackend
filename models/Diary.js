@@ -1,11 +1,27 @@
-const mongoose = require("mongoose");
+import { getDb } from "../config/db.js";
 
-const diarySchema = mongoose.Schema({
-  date: String,
-  content: String,
-  author: String,
-});
+export class Diary {
+  constructor(date, content, author) {
+    this.date = date;
+    this.content = content;
+    this.author = author;
+  }
+  static getDiary() {
+    const db = getDb();
+    return db
+      .collection("diary")
+      .find()
+      .toArray()
+      .then((diary) => diary)
+      .catch((err) => err);
+  }
 
-const DiaryModel = mongoose.model("diary", diarySchema);
-
-module.exports = { DiaryModel };
+  save() {
+    const db = getDb();
+    return db
+      .collection("diary")
+      .insertOne(this)
+      .then((result) => result)
+      .catch((err) => err);
+  }
+}

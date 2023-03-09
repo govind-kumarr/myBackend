@@ -1,17 +1,15 @@
-const express = require("express");
-const { DiaryModel } = require("../models/Diary");
+import express from "express";
+import { Diary } from "../models/Diary.js";
 
 const DiaryRouter = express();
 
 DiaryRouter.get("/", async (req, res, next) => {
-  try{
-    const data = await DiaryModel.find();
-     res.send(data);
-  }catch(err){
-    console.log(err);
-    res.send("Error While Fetching data");
-  }
-  
+  Diary.getDiary()
+    .then((diary) => res.send(diary))
+    .catch((err) => {
+      console.log(err);
+      res.send("Error while retrieving data");
+    });
 });
 
 DiaryRouter.post("/create", async (req, res, next) => {
@@ -19,19 +17,17 @@ DiaryRouter.post("/create", async (req, res, next) => {
   if (!date || !content || !author) {
     res.send("One of the field is missing");
   } else {
-    try {
-      const page = new DiaryModel({
-        date,
-        content,
-        author,
+    const Page = new Diary(date, content, author);
+    Page.save()
+      .then((result) => {
+        console.log("Result",result)
+        res.send("Page saved successfully");
+      })
+      .catch((error) => {
+        console.log("Error occured saving page\n", error);
+        res.send("Error occured saving page");
       });
-      await page.save();
-      res.send("Page saved successfully");
-    } catch (error) {
-      console.log("Error occured saving page\n", error);
-      res.send("Error occured saving page");
-    }
   }
 });
 
-module.exports = DiaryRouter;
+export { DiaryRouter };

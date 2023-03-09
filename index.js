@@ -1,11 +1,12 @@
-require("dotenv").config();
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const express = require("express");
-const makeConnection = require("./config/db");
-const DiaryRouter = require("./routes/diary.routes");
+import { config } from "dotenv";
+import bodyParser from "body-parser";
+import cors from "cors";
+import express from "express";
+import { makeConnection } from "./config/db.js";
+import { DiaryRouter } from "./routes/diary.routes.js";
 const app = express();
 
+config();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(
