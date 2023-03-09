@@ -12,7 +12,7 @@ DiaryRouter.get("/", async (req, res, next) => {
     });
 });
 
-DiaryRouter.post("/create", async (req, res, next) => {
+DiaryRouter.post("/", async (req, res, next) => {
   const { date, content, author } = req.body;
   if (!date || !content || !author) {
     res.send("One of the field is missing");

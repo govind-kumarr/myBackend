@@ -9,7 +9,7 @@ export class Diary {
   static getDiary() {
     const db = getDb();
     return db
-      .collection("diary")
+      .collection("diaries")
       .find()
       .toArray()
       .then((diary) => diary)
@@ -19,7 +19,7 @@ export class Diary {
   save() {
     const db = getDb();
     return db
-      .collection("diary")
+      .collection("diaries")
       .insertOne(this)
       .then((result) => result)
       .catch((err) => err);
