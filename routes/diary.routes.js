@@ -20,7 +20,7 @@ DiaryRouter.post("/", async (req, res, next) => {
     const Page = new Diary(date, content, author);
     Page.save()
       .then((result) => {
-        console.log("Result",result)
+        console.log("Result", result);
         res.send("Page saved successfully");
       })
       .catch((error) => {
@@ -28,6 +28,19 @@ DiaryRouter.post("/", async (req, res, next) => {
         res.send("Error occured saving page");
       });
   }
+});
+
+DiaryRouter.delete("/:id", (req, res, next) => {
+  const { id } = req.params;
+  Diary.Delete(id)
+    .then((result) => {
+      console.log("Deleted", result);
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log("Failed to delete", err);
+      res.send("Error while deleting");
+    });
 });
 
 export { DiaryRouter };
