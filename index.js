@@ -2,7 +2,7 @@ require("dotenv").config();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const express = require("express");
-const connection = require("./config/db");
+const makeConnection = require("./config/db");
 const DiaryRouter = require("./routes/diary.routes");
 const app = express();
 
@@ -20,12 +20,8 @@ app.use("/", (req, res, next) => {
   res.send("Welcome to the app!");
 });
 
-app.listen(process.env.port, async () => {
-  console.log("App is listening on port " + process.env.port);
-  try {
-    await connection;
-    console.log("Connected to database");
-  } catch (error) {
-    console.log("Error connecting to database \n", error);
-  }
+makeConnection(() => {
+  app.listen(process.env.port, () => {
+    console.log("App listening on port " + process.env.port);
+  });
 });
