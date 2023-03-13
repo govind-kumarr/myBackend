@@ -2,11 +2,13 @@ import { ObjectId } from "mongodb";
 import { getDb } from "../config/db.js";
 
 export class Diary {
-  constructor(date, content, author) {
+  constructor(date, content, author, id) {
     this.date = date;
     this.content = content;
     this.author = author;
+    this._id = id;
   }
+
   static getDiary() {
     const db = getDb();
     return db
@@ -19,6 +21,13 @@ export class Diary {
 
   save() {
     const db = getDb();
+    if (this._id) {
+      return db
+        .collection("diaries")
+        .updateOne({ _id: new ObjectId(this._id) }, { $set: this })
+        .then((result) => result)
+        .catch((err) => err);
+    }
     return db
       .collection("diaries")
       .insertOne(this)

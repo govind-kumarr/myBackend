@@ -1,48 +1,19 @@
 import express from "express";
-import { Diary } from "../models/Diary.js";
+import {
+  delete_A_Note,
+  edit_A_Note,
+  getDiary,
+  post_A_Note,
+} from "../controllers/diary.controller.js";
 
 const DiaryRouter = express();
 
-DiaryRouter.get("/", async (req, res, next) => {
-  Diary.getDiary()
-    .then((diary) => res.send(diary))
-    .catch((err) => {
-      console.log(err);
-      res.send("Error while retrieving data");
-    });
-});
+DiaryRouter.get("/", getDiary);
 
-DiaryRouter.post("/", async (req, res, next) => {
-  const { date, content, author } = req.body;
-  if (!date || !content || !author) {
-    res.send("One of the field is missing");
-  } else {
-    const Page = new Diary(date, content, author);
-    Page.save()
-      .then((result) => {
-        console.log("Result", result);
-        res.send("Page saved successfully");
-      })
-      .catch((error) => {
-        console.log("Error occured saving page\n", error);
-        res.send("Error occured saving page");
-      });
-  }
-});
+DiaryRouter.patch("/:id", edit_A_Note);
 
-DiaryRouter.delete("/:id", (req, res, next) => {
-  const { id } = req.params;
-  Diary.Delete(id)
-    .then((result) => {
-      console.log("Deleted", result);
-      res.send(result);
-    })
-    .catch((err) => {
-      console.log("Failed to delete", err);
-      res.send("Error while deleting");
-    });
-});
+DiaryRouter.post("/", post_A_Note);
 
-
+DiaryRouter.delete("/:id", delete_A_Note);
 
 export { DiaryRouter };

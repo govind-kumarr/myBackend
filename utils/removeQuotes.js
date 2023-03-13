@@ -13,9 +13,17 @@ export const removeQuotes = (str) =>
 
 export const validateQuery = (obj) => {
   if (typeof obj == "object") {
-    console.log("i am validating query");
     for (let key in obj) {
-      obj[key] = removeQuotes(obj[key]);
+      if (
+        key == "OgPrice" ||
+        key == "ratingV" ||
+        key == "ratingC" ||
+        key == "dprice"
+      ) {
+        obj[key] = +obj[key];
+      } else if (typeof (obj[key] == "string")) {
+        obj[key] = removeQuotes(obj[key]);
+      }
     }
   }
   return obj;
