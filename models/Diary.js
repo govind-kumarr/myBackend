@@ -19,6 +19,17 @@ export class Diary {
       .catch((err) => err);
   }
 
+  static shallowUpdate()
+
+  static getById(id) {
+    const db = getDb();
+    return db
+      .collection("diaries")
+      .findOne({ _id: new ObjectId(id) })
+      .then((note) => note)
+      .catch((err) => err);
+  }
+
   save() {
     const db = getDb();
     if (this._id) {
