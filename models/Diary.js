@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 import { getDb } from "../config/db.js";
 
 export class Diary {
-  constructor(date, content, author, id) {
+  constructor(date, content, author) {
     this.date = date;
     this.content = content;
     this.author = author;
@@ -19,7 +19,14 @@ export class Diary {
       .catch((err) => err);
   }
 
-  static shallowUpdate()
+  static shallowUpdate(id, data) {
+    const db = getDb();
+    return db
+      .collection("diaries")
+      .updateOne({ _id: new ObjectId(id) }, { $set: data })
+      .then((updatedProduct) => updatedProduct)
+      .catch((error) => error);
+  }
 
   static getById(id) {
     const db = getDb();
@@ -32,13 +39,6 @@ export class Diary {
 
   save() {
     const db = getDb();
-    if (this._id) {
-      return db
-        .collection("diaries")
-        .updateOne({ _id: new ObjectId(this._id) }, { $set: this })
-        .then((result) => result)
-        .catch((err) => err);
-    }
     return db
       .collection("diaries")
       .insertOne(this)

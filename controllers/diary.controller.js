@@ -29,17 +29,14 @@ export const post_A_Note = async (req, res, next) => {
 
 export const edit_A_Note = (req, res, next) => {
   const data = req.body;
+  const { id } = req.params;
   console.log(data, "Update function called");
-  const newNote = new Diary(data?.date, data?.content, data?.author, data?._id);
-  console.log(newNote);
-  res.send(newNote);
-  // newNote
-  //   .save()
-  //   .then((response) => res.send(response))
-  //   .catch((error) => {
-  //     console.log("Error while updating\n", error);
-  //     res.send("Something went wrong!");
-  //   });
+  Diary.shallowUpdate(id, data)
+    .then((updatedProduct) => res.send(updatedProduct))
+    .catch((error) => {
+      console.log("Error occured while updating\n", error);
+      res.send("Something went wrong!😓");
+    });
 };
 
 export const delete_A_Note = (req, res, next) => {
