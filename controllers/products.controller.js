@@ -23,10 +23,7 @@ export const getProductsWithQuery = (req, res, next) => {
         console.log("Error while getting products\n", error);
         res.send("Error while getting products");
       });
-  } else {
-    console.log("next is called with no query");
-    next();
-  }
+  } else next();
 };
 
 export const getSingleProduct = (req, res, next) => {

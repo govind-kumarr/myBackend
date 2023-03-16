@@ -8,6 +8,7 @@ import { FruitRouter } from "./routes/fruits.routes.js";
 import { ProductRouter } from "./routes/products.routes.js";
 import { LensCartRouter } from "./routes/lenscart.routes.js";
 import { CakeRouter } from "./routes/Cake.routes.js";
+
 const app = express();
 
 config();
@@ -35,6 +36,6 @@ app.use("/", (req, res, next) => {
 
 makeConnection(() => {
   app.listen(process.env.port, () => {
-    console.log("App listening on port " + process.env.port);
+    console.log(`App is listening on port: ${process.env.port}`);
   });
 });
