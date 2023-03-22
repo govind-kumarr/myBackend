@@ -7,6 +7,7 @@
   "scripts": {
     "start": "node index.js",
     "server": "nodemon index.js",
+    "mongoose": "nodemon db1.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

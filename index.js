@@ -8,6 +8,8 @@ import { FruitRouter } from "./routes/fruits.routes.js";
 import { ProductRouter } from "./routes/products.routes.js";
 import { LensCartRouter } from "./routes/lenscart.routes.js";
 import { CakeRouter } from "./routes/Cake.routes.js";
+import { connection } from "./config/db1.js";
+import { UserRouter } from "./routes/users.routes.js";
 
 const app = express();
 
@@ -19,6 +21,8 @@ app.use(
     origin: "*",
   })
 );
+
+app.use("/users", UserRouter);
 
 app.use("/diary", DiaryRouter);
 
@@ -34,8 +38,17 @@ app.use("/", (req, res, next) => {
   res.send("Welcome to the app!");
 });
 
-makeConnection(() => {
-  app.listen(process.env.port, () => {
-    console.log(`App is listening on port: ${process.env.port}`);
-  });
+makeConnection(async () => {
+  try {
+    await connection;
+    console.log("Connected to the database using mongoose");
+    app.listen(process.env.port, () => {
+      console.log(`App is listening on port: ${process.env.port}`);
+    });
+  } catch (error) {
+    console.log(
+      "Error while connecting to the database using mongoose: \n",
+      error
+    );
+  }
 });
