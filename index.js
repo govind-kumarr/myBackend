@@ -10,17 +10,23 @@ import { LensCartRouter } from "./routes/lenscart.routes.js";
 import { CakeRouter } from "./routes/Cake.routes.js";
 import { connection } from "./config/db1.js";
 import { UserRouter } from "./routes/users.routes.js";
+import { login, signUp } from "./controllers/user.controller.js";
 
 const app = express();
 
 config();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
+
 app.use(
   cors({
     origin: "*",
   })
 );
+
+app.post("/signup", signUp);
+
+app.post("/login", login);
 
 app.use("/users", UserRouter);
 

@@ -1,11 +1,46 @@
+import jsonwebtoken from "jsonwebtoken";
 import { UserModel } from "../models/User.js";
 
-export const getUsers = async (req, res, next) => {
+export const login = async (req, res) => {
+  const { email, password } = req.body;
   try {
-    const students = await UserModel.find();
-    res.send(students);
+    const result = await UserModel.findOne({ email, password });
+    console.log(result);
+    const token = jsonwebtoken.sign({ name: "Govind Kumar" }, "gov");
+    if (result) res.send({ message: "Login successful!", token });
+    else res.send("No such user found!");
   } catch (err) {
-    res.send("Something went wrong!");
+    res.send("Something went wrong Try to login again");
+  }
+};
+
+export const signUp = async (req, res, next) => {
+  const payload = req.body;
+  try {
+    await UserModel.insertMany([payload]);
+    console.log("SignUp successful");
+    res.send("SignUp successful");
+  } catch (error) {
+    console.log(error);
+    res.send("Something Went wrong Try again");
+  }
+};
+
+export const getUsers = async (req, res, next) => {
+  const { authorization } = req.headers;
+  let decodedToken;
+  jsonwebtoken.verify(authorization, "gov", (error, decoded) => {
+    if (error) res.send("Please login! wrong credentials");
+    else decodedToken = decoded;
+  });
+
+  if (decodedToken) {
+    try {
+      const students = await UserModel.find();
+      res.send(students);
+    } catch (err) {
+      res.send("Something went wrong!");
+    }
   }
 };
 

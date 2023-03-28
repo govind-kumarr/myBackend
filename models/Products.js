@@ -6,7 +6,7 @@ export class Product {
     this.name = name;
     this.price = price;
     this.originalPrice = originalPrice || price + 100;
-    this.discount = discount || 100;
+    this.discount = originalPrice - price || 100;
     this.category = category || "Electronics";
     this.brand = brand || name.split(" ")[0];
   }
