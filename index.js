@@ -24,9 +24,6 @@ app.use(
   })
 );
 
-app.post("/signup", signUp);
-
-app.post("/login", login);
 
 app.use("/users", UserRouter);
 
